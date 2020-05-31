@@ -26,7 +26,7 @@ class SrcModel{
 
   factory SrcModel.fromMap(Map<String, dynamic> jsonData){
     return SrcModel(
-      portrait: jsonData["potrait"],
+      portrait: jsonData["portrait"],
       original: jsonData["original"],
       small: jsonData['small']
     );

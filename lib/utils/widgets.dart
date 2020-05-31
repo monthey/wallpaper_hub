@@ -44,9 +44,7 @@ class CategoryTile extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(8)
-            ),
+                color: Colors.black26, borderRadius: BorderRadius.circular(8)),
             alignment: Alignment.center,
             height: 50,
             width: 100,
@@ -71,17 +69,21 @@ Widget wallpapersGrid({List<WallpaperModel> wallpapers, context}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 16),
     child: GridView.count(
-      shrinkWrap: true,
-      crossAxisCount: 2,
-      childAspectRatio: 0.6,
-      mainAxisSpacing: 6.0,
-      crossAxisSpacing: 6.0,
-      children: wallpapers.map((wallpaper){
-        return GridTile(child: Container(
-          color: Colors.blue,
-          child: Image.network(wallpaper.src.portrait)
-        ));
-      }).toList()
-    ),
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        crossAxisCount: 2,
+        childAspectRatio: 0.6,
+        mainAxisSpacing: 6.0,
+        crossAxisSpacing: 6.0,
+        children: wallpapers.map((WallpaperModel wallpaper) {
+          return GridTile(
+              child: Container(
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        wallpaper.src.portrait,
+                        fit: BoxFit.cover,
+                      ))));
+        }).toList()),
   );
 }

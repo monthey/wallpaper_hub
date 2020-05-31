@@ -1,9 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallpaperhub/data/data.dart';
 import 'package:wallpaperhub/model/CategoriesModel.dart';
 import 'package:wallpaperhub/model/wallpaperModel.dart';
+import 'package:wallpaperhub/screens/SearchScreen.dart';
 import 'package:wallpaperhub/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,21 +17,24 @@ class _HomeScreenState extends State<HomeScreen> {
   List<CategoriesModel> categories = new List();
   List<WallpaperModel> wallpapers = new List();
 
+  TextEditingController _textEditingController = TextEditingController();
+
   getTrendingWallpapers() async {
     var response = await http.get(
-        "https://api.pexels.com/v1/curated?per_page=15&page=1",
+        "https://api.pexels.com/v1/curated?per_page=20&page=1",
         headers: {"Authorization": apiKey});
 
-//    print(response.body.toString());
-    Map<String,dynamic> jsonData = jsonDecode(response.body);
-    jsonData["photos"].forEach((element){
-      WallpaperModel wallpaperModel = new WallpaperModel();
-      wallpaperModel = WallpaperModel.fromMap(element);
-      wallpapers.add(wallpaperModel);
-      print(element.src.portrait);
-
-    });
-
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      jsonData["photos"].forEach((element) {
+        WallpaperModel wallpaperModel = new WallpaperModel();
+        wallpaperModel = WallpaperModel.fromMap(element);
+        wallpapers.add(wallpaperModel);
+//        print(element);
+      });
+    } else {
+      print(response.statusCode);
+    }
     setState(() {});
   }
 
@@ -48,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: brandName(),
         elevation: 0.0,
         centerTitle: true,
+
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -64,12 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        controller: _textEditingController,
                         decoration: InputDecoration(
                             hintText: "Search Wallpapers....",
                             border: InputBorder.none),
                       ),
                     ),
-                    Icon(Icons.search)
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchScreen(
+                                    searchQuery: _textEditingController.text)));
+                      },
+                      child: Icon(Icons.search),
+                    ),
                   ],
                 ),
               ),
@@ -90,8 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }),
               ),
-              SizedBox(height: 10,),
-              wallpapersGrid(wallpapers: wallpapers,context: context),
+              SizedBox(
+                height: 10,
+              ),
+              wallpapersGrid(wallpapers: wallpapers, context: context),
             ],
           ),
         ),
