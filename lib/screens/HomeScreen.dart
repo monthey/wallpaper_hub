@@ -55,65 +55,66 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
 
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 24),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Color(0xFFF5f8fd),
-                    borderRadius: BorderRadius.circular(30)),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: _textEditingController,
-                        decoration: InputDecoration(
-                            hintText: "Search Wallpapers....",
-                            border: InputBorder.none),
-                      ),
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFFF5f8fd),
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            controller: _textEditingController,
+                            decoration: InputDecoration(
+                                hintText: "Search Wallpapers....",
+                                border: InputBorder.none),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchScreen(
+                                        searchQuery: _textEditingController.text)));
+                          },
+                          child: Icon(Icons.search),
+                        ),
+                      ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchScreen(
-                                    searchQuery: _textEditingController.text)));
-                      },
-                      child: Icon(Icons.search),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Container(
+                    height: 80,
+                    child: ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        itemCount: categories.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return CategoryTile(
+                            title: categories[index].categorieName,
+                            imgUrl: categories[index].imgUrl,
+                          );
+                        }),
+                  ),
+                  wallpapersGrid(wallpapers: wallpapers, context: context),
+                ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                height: 80,
-                child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    itemCount: categories.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return CategoryTile(
-                        title: categories[index].categorieName,
-                        imgUrl: categories[index].imgUrl,
-                      );
-                    }),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              wallpapersGrid(wallpapers: wallpapers, context: context),
-            ],
+            ),
           ),
-        ),
-      ),
+        ],
+      )
     );
   }
 }

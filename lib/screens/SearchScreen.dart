@@ -57,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
+            SizedBox(height: 10,),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 24),
               padding: EdgeInsets.symmetric(horizontal: 20),
