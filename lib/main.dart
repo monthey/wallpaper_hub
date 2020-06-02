@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wallpaperhub/screens/HomeScreen.dart';
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,10 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.white,
-      ),
+
       home: HomeScreen(),
     );
   }

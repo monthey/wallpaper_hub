@@ -118,3 +118,4 @@ Widget wallpapersGrid({List<WallpaperModel> wallpapers, context}) {
         }).toList()),
   );
 }
+
